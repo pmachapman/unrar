@@ -8,6 +8,9 @@
 #ifdef RARDLL
 #include "dll.hpp"
 #endif
+#ifdef RARLIB
+#include "unrarlib.hpp"
+#endif
 
 #include "version.hpp"
 #include "rardefs.hpp"
@@ -32,7 +35,7 @@
 #ifdef _WIN_ALL
 #include "isnt.hpp"
 #endif
-#include "file.hpp"
+#include "filemem.hpp"
 #include "crc.hpp"
 #include "ui.hpp"
 #include "filefn.hpp"

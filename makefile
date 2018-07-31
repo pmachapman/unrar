@@ -5,7 +5,7 @@
 CXX=c++
 CXXFLAGS=-O2 -Wno-logical-op-parentheses -Wno-switch -Wno-dangling-else
 LIBFLAGS=-fPIC
-DEFINES=-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DRAR_SMP
+DEFINES=-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -DRAR_SMP -DRAR_NOCRYPT -DSFX_MODULE -DSILENT
 STRIP=strip
 AR=ar
 LDFLAGS=-pthread
@@ -120,9 +120,9 @@ LINK=$(CXX)
 WHAT=UNRAR
 
 UNRAR_OBJ=filestr.o recvol.o rs.o scantree.o qopen.o
-LIB_OBJ=filestr.o scantree.o dll.o qopen.o
+LIB_OBJ=scantree.o rs.o unrarlib.o
 
-OBJECTS=rar.o strlist.o strfn.o pathfn.o smallfn.o global.o file.o filefn.o filcreat.o \
+OBJECTS=rar.o strlist.o strfn.o pathfn.o smallfn.o global.o filemem.o filefn.o filcreat.o \
 	archive.o arcread.o unicode.o system.o isnt.o crypt.o crc.o rawread.o encname.o \
 	resource.o match.o timefn.o rdwrfn.o consio.o options.o errhnd.o rarvm.o secpassword.o \
 	rijndael.o getbits.o sha1.o sha256.o blake2s.o hash.o extinfo.o extract.o volume.o \
@@ -151,7 +151,7 @@ sfx:	clean $(OBJECTS)
 	$(LINK) -o default.sfx $(LDFLAGS) $(OBJECTS)
 	$(STRIP) default.sfx
 
-lib:	WHAT=RARDLL
+lib:	WHAT=RARLIB
 lib:	CXXFLAGS+=$(LIBFLAGS)
 lib:	clean $(OBJECTS) $(LIB_OBJ)
 	@rm -f libunrar.so
