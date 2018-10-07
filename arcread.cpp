@@ -566,7 +566,7 @@ size_t Archive::ReadHeader50()
     // We repeat the password request only for manually entered passwords
     // and not for -p<pwd>. Wrong password can be intentionally provided
     // in -p<pwd> to not stop batch processing for encrypted archives.
-    bool GlobalPassword=Cmd->Password.IsSet();
+    bool GlobalPassword=Cmd->Password.IsSet() || uiIsGlobalPasswordSet();
 
     while (true) // Repeat the password prompt for wrong passwords.
     {
