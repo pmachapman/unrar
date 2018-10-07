@@ -815,6 +815,8 @@ size_t Archive::ReadHeader50()
         // but it was already used in RAR 1.5 and Unpack needs to distinguish
         // them.
         hd->UnpVer=(CompInfo & 0x3f) + 50;
+        if (hd->UnpVer!=50) // Only 5.0 compression is known now.
+          hd->UnpVer=VER_UNKNOWN;
 
         hd->HostOS=(byte)Raw.GetV();
         size_t NameSize=(size_t)Raw.GetV();
