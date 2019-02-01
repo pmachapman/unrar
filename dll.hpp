@@ -135,6 +135,8 @@ typedef int (CALLBACK *UNRARCALLBACK)(UINT msg,LPARAM UserData,LPARAM P1,LPARAM 
 #define ROADF_ENCHEADERS   0x0080
 #define ROADF_FIRSTVOLUME  0x0100
 
+#define ROADOF_KEEPBROKEN  0x0001
+
 struct RAROpenArchiveDataEx
 {
   char         *ArcName;
@@ -148,7 +150,8 @@ struct RAROpenArchiveDataEx
   unsigned int  Flags;
   UNRARCALLBACK Callback;
   LPARAM        UserData;
-  unsigned int  Reserved[28];
+  unsigned int  OpFlags;
+  unsigned int  Reserved[27];
 };
 
 enum UNRARCALLBACK_MESSAGES {
