@@ -720,6 +720,7 @@ size_t Archive::ReadHeader50()
           UnkEncVerMsg(FileName,Info);
           return 0;
         }
+
         Raw.GetB(CryptHead.Salt,SIZE_SALT50);
         if (CryptHead.UsePswCheck)
         {
