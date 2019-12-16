@@ -584,7 +584,7 @@ size_t Archive::ReadHeader50()
         {
           // This message is used by Android GUI to reset cached passwords.
           // Update appropriate code if changed.
-          uiMsg(UIERROR_BADPSW,FileName);
+          uiMsg(UIERROR_BADPSW,FileName,FileName);
           FailedHeaderDecryption=true;
           ErrHandler.SetErrorCode(RARX_BADPWD);
           return 0;
@@ -593,7 +593,7 @@ size_t Archive::ReadHeader50()
         {
           // This message is used by Android GUI and Windows GUI and SFX to
           // reset cached passwords. Update appropriate code if changed.
-          uiMsg(UIWAIT_BADPSW,FileName);
+          uiMsg(UIWAIT_BADPSW,FileName,FileName);
           Cmd->Password.Clean();
         }
 
