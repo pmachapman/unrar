@@ -393,3 +393,4 @@
 #define   MTruncPsw          L"\nPassword exceeds the maximum allowed length of %u characters and will be truncated."
 #define   MAdjustValue       L"\nAdjusting %s value to %s."
 #define   MOpFailed          L"\nOperation failed"
+#define   MSkipEncArc        L"\nSkipping the encrypted archive %s"
