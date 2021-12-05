@@ -558,6 +558,9 @@ size_t Archive::ReadHeader50()
     return 0;
 #else
 
+    if (Cmd->SkipEncrypted)
+      return 0;
+
     byte HeadersInitV[SIZE_INITV];
     if (Read(HeadersInitV,SIZE_INITV)!=SIZE_INITV)
     {

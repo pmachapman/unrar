@@ -517,6 +517,18 @@ bool SetFileCompression(const wchar *Name,bool State)
   CloseHandle(hFile);
   return RetCode!=0;
 }
+
+
+void ResetFileCache(const wchar *Name)
+{
+  // To reset file cache in Windows it is enough to open it with
+  // FILE_FLAG_NO_BUFFERING and then close it.
+  HANDLE hSrc=CreateFile(Name,GENERIC_READ,
+                         FILE_SHARE_READ|FILE_SHARE_WRITE,
+                         NULL,OPEN_EXISTING,FILE_FLAG_NO_BUFFERING,NULL);
+  if (hSrc!=INVALID_HANDLE_VALUE)
+    CloseHandle(hSrc);
+}
 #endif
 
 

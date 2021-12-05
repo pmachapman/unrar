@@ -247,6 +247,9 @@ void uiMsgStore::Msg()
       mprintf(L"\n"); // Needed when called from CmdExtract::ExtractCurrentFile.
       break;
 #ifndef SFX_MODULE
+    case UIERROR_OPFAILED:
+      Log(NULL,St(MOpFailed));
+      break;
     case UIERROR_NEWRARFORMAT:
       Log(Str[0],St(MNewRarFormat));
       break;
@@ -328,6 +331,12 @@ void uiMsgStore::Msg()
       break;
     case UIERROR_DIRNAMEEXISTS:
       Log(NULL,St(MDirNameExists));
+      break;
+    case UIERROR_TRUNCPSW:
+      eprintf(St(MTruncPsw),Num[0]);
+      break;
+    case UIERROR_ADJUSTVALUE:
+      Log(NULL,St(MAdjustValue),Str[0],Str[1]);
       break;
 
 #ifndef SFX_MODULE
