@@ -242,7 +242,7 @@ bool ExtractSymlink(CommandData *Cmd,ComprDataIO &DataIO,Archive &Arc,const wcha
 #if defined(SAVE_LINKS) && defined(_UNIX)
   // For RAR 3.x archives we process links even in test mode to skip link data.
   if (Arc.Format==RARFMT15)
-    return ExtractUnixLink30(Cmd,DataIO,Arc,LinkName,UpLink);
+    return false;
   if (Arc.Format==RARFMT50)
     return ExtractUnixLink50(Cmd,LinkName,&Arc.FileHead);
 #elif defined(_WIN_ALL)

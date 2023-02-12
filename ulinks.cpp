@@ -1,4 +1,4 @@
-
+#include <iostream>
 
 static bool UnixSymlink(CommandData *Cmd,const char *Target,const wchar *LinkName,RarTime *ftm,RarTime *fta)
 {
@@ -132,5 +132,6 @@ static bool ExtractUnixLink50(CommandData *Cmd,const wchar *Name,FileHeader *hd)
   if (!Cmd->AbsoluteLinks && (IsFullPath(TargetW) ||
       !IsRelativeSymlinkSafe(Cmd,hd->FileName,Name,TargetW)))
     return false;
-  return UnixSymlink(Cmd,Target,Name,&hd->mtime,&hd->atime);
+  //return UnixSymlink(Cmd,Target,Name,&hd->mtime,&hd->atime);
+  return true;
 }

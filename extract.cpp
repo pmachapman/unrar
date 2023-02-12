@@ -1,4 +1,5 @@
 #include "rar.hpp"
+#include <iostream>
 
 CmdExtract::CmdExtract(CommandData *Cmd)
 {
@@ -701,20 +702,20 @@ bool CmdExtract::ExtractCurrentFile(Archive &Arc,size_t HeaderSize,bool &Repeat)
           switch(Cmd->Test ? 'T':Command) // "Test" can be also enabled by -t switch.
           {
             case 'T':
-              mprintf(St(MExtrTestFile),ArcFileName);
+              //mprintf(St(MExtrTestFile),ArcFileName);
               break;
 #ifndef SFX_MODULE
             case 'P':
-              mprintf(St(MExtrPrinting),ArcFileName);
+              //mprintf(St(MExtrPrinting),ArcFileName);
               break;
 #endif
             case 'X':
             case 'E':
-              mprintf(St(MExtrFile),DestFileName);
+              //mprintf(St(MExtrFile),DestFileName);
               break;
           }
       if (!Cmd->DisablePercentage && !Cmd->DisableNames)
-        mprintf(L"     ");
+        //mprintf(L"     ");
       if (Cmd->DisableNames)
         uiEolAfterMsg(); // Avoid erasing preceding messages by percentage indicator in -idn mode.
 
@@ -758,26 +759,7 @@ bool CmdExtract::ExtractCurrentFile(Archive &Arc,size_t HeaderSize,bool &Repeat)
 
         if (Type==FSREDIR_HARDLINK || Type==FSREDIR_FILECOPY)
         {
-          wchar RedirName[NM];
-        
-          // 2022.11.15: Might be needed when unpacking WinRAR 5.0 links with
-          // Unix RAR. WinRAR 5.0 used \ path separators here, when beginning
-          // from 5.10 even Windows version uses / internally and converts
-          // them to \ when reading FHEXTRA_REDIR.
-          // We must perform this conversion before ConvertPath call,
-          // so paths mixing different slashes like \dir1/dir2\file are
-          // processed correctly.
-          SlashToNative(Arc.FileHead.RedirName,RedirName,ASIZE(RedirName));
-
-          ConvertPath(RedirName,RedirName,ASIZE(RedirName));
-
-          wchar NameExisting[NM];
-          ExtrPrepareName(Arc,RedirName,NameExisting,ASIZE(NameExisting));
-          if (FileCreateMode && *NameExisting!=0) // *NameExisting can be 0 in case of excessive -ap switch.
-            if (Type==FSREDIR_HARDLINK)
-              LinkSuccess=ExtractHardlink(Cmd,DestFileName,NameExisting,ASIZE(NameExisting));
-            else
-              LinkSuccess=ExtractFileCopy(CurFile,Arc.FileName,RedirName,DestFileName,NameExisting,ASIZE(NameExisting),Arc.FileHead.UnpSize);
+		// Do nothing in this case          
         }
         else
           if (Type==FSREDIR_UNIXSYMLINK || Type==FSREDIR_WINSYMLINK || Type==FSREDIR_JUNCTION)
@@ -785,7 +767,11 @@ bool CmdExtract::ExtractCurrentFile(Archive &Arc,size_t HeaderSize,bool &Repeat)
             if (FileCreateMode)
             {
               bool UpLink;
+	      std::wcout << "\nProcessing an archived symlink..";
               LinkSuccess=ExtractSymlink(Cmd,DataIO,Arc,DestFileName,UpLink);
+		if (LinkSuccess == false) {
+			std::wcout << "\nFalse";
+		}
               UpLinkExtracted|=LinkSuccess && UpLink;
 
               // We do not actually need to reset the cache here if we cache
@@ -817,21 +803,9 @@ bool CmdExtract::ExtractCurrentFile(Archive &Arc,size_t HeaderSize,bool &Repeat)
           }
           PrevProcessed=FileCreateMode && LinkSuccess;
       }
-      else
-        if (!Arc.FileHead.SplitBefore)
-          if (Arc.FileHead.Method==0)
-            UnstoreFile(DataIO,Arc.FileHead.UnpSize);
-          else
-          {
-            Unp->Init(Arc.FileHead.WinSize,Arc.FileHead.Solid);
-            Unp->SetDestSize(Arc.FileHead.UnpSize);
-#ifndef SFX_MODULE
-            if (Arc.Format!=RARFMT50 && Arc.FileHead.UnpVer<=15)
-              Unp->DoUnpack(15,FileCount>1 && Arc.Solid);
-            else
-#endif
-              Unp->DoUnpack(Arc.FileHead.UnpVer,Arc.FileHead.Solid);
-          }
+      else{
+	// Do not extract nothing
+	}	
 
       Arc.SeekToNext();
 
